@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <opencv2/opencv.hpp>
 #include "iaveragebackgroundcolourlocator.h"
+#include <algorithm>
+#include <random>
 
 namespace anima
 {
@@ -126,8 +128,8 @@ namespace anima
             case InputAssemblerDescriptor::ETCS_RGB:
                 break;
             case InputAssemblerDescriptor::ETCS_HSV:
-                cv::cvtColor(mForegroundF, mForegroundF, CV_RGB2HSV);
-                cv::cvtColor(mBackgroundF, mBackgroundF, CV_RGB2HSV);
+                cv::cvtColor(mForegroundF, mForegroundF, cv::COLOR_RGB2HSV);
+                cv::cvtColor(mBackgroundF, mBackgroundF, cv::COLOR_RGB2HSV);
 
                 //Normalise hue:
                 for (int i = 0; i < mForegroundF.rows; ++i)
@@ -144,8 +146,8 @@ namespace anima
                 }
                 break;
             case InputAssemblerDescriptor::ETCS_LAB:
-                cv::cvtColor(mForegroundF, mForegroundF, CV_RGB2Lab);
-                cv::cvtColor(mBackgroundF, mBackgroundF, CV_RGB2Lab);
+                cv::cvtColor(mForegroundF, mForegroundF, cv::COLOR_RGB2Lab);
+                cv::cvtColor(mBackgroundF, mBackgroundF, cv::COLOR_RGB2Lab);
 
                 //Get into proper range
                 for (int i = 0; i < mForegroundF.rows; ++i)
@@ -196,7 +198,7 @@ namespace anima
             {
                 p.x *= 360.f;
                 cv::Mat mat(1,1,CV_32FC3, &p.x);
-                cv::cvtColor(mat, mat, CV_HSV2BGR);
+                cv::cvtColor(mat, mat, cv::COLOR_HSV2BGR);
             }
                 break;
             case InputAssemblerDescriptor::ETCS_LAB:
@@ -206,7 +208,7 @@ namespace anima
                                 p.z*254.f - 127.f);
 
                 cv::Mat mat(1,1,CV_32FC3, &p.x);
-                cv::cvtColor(mat, mat, CV_Lab2BGR);
+                cv::cvtColor(mat, mat, cv::COLOR_Lab2BGR);
             }
                 break;
             default:

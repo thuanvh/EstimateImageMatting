@@ -4,12 +4,12 @@ QT += opengl xml glviewer
 
 QT_CONFIG -= no-pkg-config
 CONFIG += link_pkgconfig
-PKGCONFIG += opencv
+PKGCONFIG += opencv4
 
 QMAKE_CXXFLAGS += -std=c++0x -Wall
 INCLUDEPATH += /usr/include
 LIBS += -L/usr/lib
-LIBS += -lqglviewer-qt4 -lGLU
+LIBS += -lQGLViewer-qt4 -lGLU
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
