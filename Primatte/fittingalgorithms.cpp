@@ -1,6 +1,7 @@
 #include "fittingalgorithms.h"
 #include "io.h"
 #include "icoloursegmenter.h"
+#include <algorithm>
 
 namespace anima
 {
@@ -16,6 +17,8 @@ namespace anima
                     //If intersects
                     math::vec3 vector = *itPoint - poly.centre();
                     float vectorLen = vector.length();
+                    if (vectorLen == 0)
+                      vectorLen = 0.000001;
                     math::vec3 vectorNorm = vector/vectorLen;
 
                     if(poly.findDistanceToPolyhedron(vectorNorm) >= vectorLen)

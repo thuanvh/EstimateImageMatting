@@ -1,6 +1,6 @@
 #pragma once
-#include <QGLViewer/qglviewer.h>
-#include <qtimer.h>
+//#include <QGLViewer/qglviewer.h>
+//#include <qtimer.h>
 
 //Forward declarations
 namespace anima
@@ -27,7 +27,7 @@ namespace anima
   * driver. Currently it reads the input from a file called "test.bmp" and
   * supplies it to the algorithm, which in itself is a general system.
   */
-class Application: public QGLViewer
+class Application //public QGLViewer
 {
 public:
     /** Initialises variables to null. */
@@ -37,7 +37,7 @@ public:
     ~Application();
 
     /** Draws a preview of the scene. */
-    virtual void draw();
+    //virtual void draw();
 
     /** Draws the background plane. Used by draw(). */
     void drawBackground();
@@ -46,7 +46,7 @@ public:
     virtual void init();
 
     /** Used by qglviewer to provide a help string during preview. */
-    virtual QString helpString() const;
+    //virtual QString helpString() const;
 
     /* The input data structure. */
     anima::ia::InputAssembler* mInputAssembler;
@@ -69,9 +69,9 @@ public:
     anima::ia::IAverageBackgroundColourLocator* mBackgroundLocator;
 
     /* Handles debug preview fps. */
-    QBasicTimer mBasicTimer;
+    //QBasicTimer mBasicTimer;
 
     /** Called on every timer tick: updates the frame. */
-    void timerEvent(QTimerEvent*);
+    //void timerEvent(QTimerEvent*);
 
 };

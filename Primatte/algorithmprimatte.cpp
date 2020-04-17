@@ -93,8 +93,8 @@ namespace anima
 
             void AlgorithmPrimatte::debugDraw() const
             {
-                for(int i = 0;  i < POLY_COUNT; ++i)
-                    mPolys[i].debugDraw(math::vec3((float)((i+2)%4==0), (float)((i+2)%3==0), 0.f));
+                /*for(int i = 0;  i < POLY_COUNT; ++i)
+                    mPolys[i].debugDraw(math::vec3((float)((i+2)%4==0), (float)((i+2)%3==0), 0.f));*/
             }
         }
     }

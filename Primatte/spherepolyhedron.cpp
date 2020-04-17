@@ -3,7 +3,8 @@
 #include <stdexcept>
 #include <assert.h>
 #include "io.h"
-#include "QGLViewer/qglviewer.h"
+#include <algorithm>
+//#include "QGLViewer/qglviewer.h"
 
 namespace anima
 {
@@ -147,65 +148,65 @@ namespace anima
     }
 
 
-    void SpherePolyhedron::debugDraw(math::vec3 colour) const
-    {
-        if(mVertices.size()==0)
-            return;
+    //void SpherePolyhedron::debugDraw(math::vec3 colour) const
+    //{
+    //    if(mVertices.size()==0)
+    //        return;
 
-        //Iterate over the quads
-        glColor3f(colour.x,colour.y,colour.z);
-        glPointSize(5.f);
-        for(unsigned iPhi = 0; iPhi < mVerticesPhiCount; ++iPhi)
-            for(unsigned iTheta = 0; iTheta < mVerticesThetaCount-1; ++iTheta)
-            {
-                //Get points
-                glBegin(GL_POINTS);
-                auto v1 = getPointAtIndex(iPhi, iTheta);
-                auto v2 = getPointAtIndex(iPhi, iTheta+1);
-                auto v3 = getPointAtIndex(((iPhi+1) % mVerticesPhiCount), iTheta+1);
-                auto v4 = getPointAtIndex(((iPhi+1) % mVerticesPhiCount), iTheta);
-                glEnd();
+    //    //Iterate over the quads
+    //    glColor3f(colour.x,colour.y,colour.z);
+    //    glPointSize(5.f);
+    //    for(unsigned iPhi = 0; iPhi < mVerticesPhiCount; ++iPhi)
+    //        for(unsigned iTheta = 0; iTheta < mVerticesThetaCount-1; ++iTheta)
+    //        {
+    //            //Get points
+    //            glBegin(GL_POINTS);
+    //            auto v1 = getPointAtIndex(iPhi, iTheta);
+    //            auto v2 = getPointAtIndex(iPhi, iTheta+1);
+    //            auto v3 = getPointAtIndex(((iPhi+1) % mVerticesPhiCount), iTheta+1);
+    //            auto v4 = getPointAtIndex(((iPhi+1) % mVerticesPhiCount), iTheta);
+    //            glEnd();
 
-                //Draw triangles
-                glBegin(GL_LINES);
-                glVertex3f(v1.x,v1.y,v1.z);
-                glVertex3f(v3.x,v3.y,v3.z);
-                glVertex3f(v1.x,v1.y,v1.z);
-                glVertex3f(v2.x,v2.y,v2.z);
-                glVertex3f(v2.x,v2.y,v2.z);
-                glVertex3f(v3.x,v3.y,v3.z);
-                glVertex3f(v4.x,v4.y,v4.z);
-                glVertex3f(v1.x,v1.y,v1.z);
-                glEnd();
-            }
+    //            //Draw triangles
+    //            glBegin(GL_LINES);
+    //            glVertex3f(v1.x,v1.y,v1.z);
+    //            glVertex3f(v3.x,v3.y,v3.z);
+    //            glVertex3f(v1.x,v1.y,v1.z);
+    //            glVertex3f(v2.x,v2.y,v2.z);
+    //            glVertex3f(v2.x,v2.y,v2.z);
+    //            glVertex3f(v3.x,v3.y,v3.z);
+    //            glVertex3f(v4.x,v4.y,v4.z);
+    //            glVertex3f(v1.x,v1.y,v1.z);
+    //            glEnd();
+    //        }
 
-        //Draw poles
-        math::vec3 north = mVertices[mVertices.size()-2];
-        math::vec3 south = mVertices[mVertices.size()-1];
+    //    //Draw poles
+    //    math::vec3 north = mVertices[mVertices.size()-2];
+    //    math::vec3 south = mVertices[mVertices.size()-1];
 
-        glBegin(GL_LINES);
-        for(unsigned iPhi = 0; iPhi < mPhiFaces; ++iPhi)
-        {
-            auto edgePointTop11 = getPointAtIndex(iPhi, mVerticesThetaCount-1);
-            auto edgePointTop21 = getPointAtIndex((iPhi+1) % (mVerticesPhiCount), mVerticesThetaCount-1);
-            glVertex3f(north.x,north.y,north.z);
-            glVertex3f(edgePointTop11.x,edgePointTop11.y,edgePointTop11.z);
-            glVertex3f(north.x,north.y,north.z);
-            glVertex3f(edgePointTop21.x,edgePointTop21.y,edgePointTop21.z);
-            glVertex3f(edgePointTop11.x,edgePointTop11.y,edgePointTop11.z);
-            glVertex3f(edgePointTop21.x,edgePointTop21.y,edgePointTop21.z);
+    //    glBegin(GL_LINES);
+    //    for(unsigned iPhi = 0; iPhi < mPhiFaces; ++iPhi)
+    //    {
+    //        auto edgePointTop11 = getPointAtIndex(iPhi, mVerticesThetaCount-1);
+    //        auto edgePointTop21 = getPointAtIndex((iPhi+1) % (mVerticesPhiCount), mVerticesThetaCount-1);
+    //        glVertex3f(north.x,north.y,north.z);
+    //        glVertex3f(edgePointTop11.x,edgePointTop11.y,edgePointTop11.z);
+    //        glVertex3f(north.x,north.y,north.z);
+    //        glVertex3f(edgePointTop21.x,edgePointTop21.y,edgePointTop21.z);
+    //        glVertex3f(edgePointTop11.x,edgePointTop11.y,edgePointTop11.z);
+    //        glVertex3f(edgePointTop21.x,edgePointTop21.y,edgePointTop21.z);
 
-            auto edgePointTop12 = getPointAtIndex(iPhi, 0);
-            auto edgePointTop22 = getPointAtIndex((iPhi+1) % (mVerticesPhiCount), 0);
-            glVertex3f(south.x,south.y,south.z);
-            glVertex3f(edgePointTop12.x,edgePointTop12.y,edgePointTop12.z);
-            glVertex3f(south.x,south.y,south.z);
-            glVertex3f(edgePointTop22.x,edgePointTop22.y,edgePointTop22.z);
-            glVertex3f(edgePointTop12.x,edgePointTop12.y,edgePointTop12.z);
-            glVertex3f(edgePointTop22.x,edgePointTop22.y,edgePointTop22.z);
-        }
-        glEnd();
-    }
+    //        auto edgePointTop12 = getPointAtIndex(iPhi, 0);
+    //        auto edgePointTop22 = getPointAtIndex((iPhi+1) % (mVerticesPhiCount), 0);
+    //        glVertex3f(south.x,south.y,south.z);
+    //        glVertex3f(edgePointTop12.x,edgePointTop12.y,edgePointTop12.z);
+    //        glVertex3f(south.x,south.y,south.z);
+    //        glVertex3f(edgePointTop22.x,edgePointTop22.y,edgePointTop22.z);
+    //        glVertex3f(edgePointTop12.x,edgePointTop12.y,edgePointTop12.z);
+    //        glVertex3f(edgePointTop22.x,edgePointTop22.y,edgePointTop22.z);
+    //    }
+    //    glEnd();
+    //}
 
     float SpherePolyhedron::findLargestRadius() const
     {

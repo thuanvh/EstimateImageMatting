@@ -28,10 +28,10 @@ Application::~Application()
     delete mInputAssembler;
 }
 
-void Application::timerEvent(QTimerEvent*)
-{
-    update();
-}
+//void Application::timerEvent(QTimerEvent*)
+//{
+//    update();
+//}
 
 void Application::init()
 {
@@ -41,16 +41,16 @@ void Application::init()
         using namespace anima::alg::primatte;
 
         //Restore QGLPreviewer state from last run, such as camera position, etc.
-        restoreStateFromFile();
+        //restoreStateFromFile();
 
         //A scene radius of 1 has some clipping.
-        this->setSceneRadius(1.5);
+        //this->setSceneRadius(1.5);
 
-        //This makes things difficult to see and interferes with the pixel colours.
-        glDisable(GL_LIGHTING);
+        ////This makes things difficult to see and interferes with the pixel colours.
+        //glDisable(GL_LIGHTING);
 
         //Set fps (update every n milliseconds). 16.66... ~ 60fps
-        mBasicTimer.start(16.66666666, this);
+        //mBasicTimer.start(16.66666666, this);
 
 
         Inform("Processing input");
@@ -225,130 +225,130 @@ void Application::init()
     {
         //If a known error has occured:
         Error(err.what());
-        this->hide();
-        this->close();
+        //this->hide();
+        //this->close();
     }
     catch(...)
     {
         //If an unknown exception happened:
         Error("Something happened");
-        this->hide();
-        this->close();
+        //this->hide();
+        //this->close();
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////
-/////////////////Below this, it's just for 3D previewing. ////////////////////
-//////////////////////////////////////////////////////////////////////////////
-
-/** This function takes in a normalised colour in linear colourspace and
-    calls glColour3f with its gamma-corrected version. */
-void glColor3fSRGB(float x, float y, float z)
-{
-    glColor3f(pow(x,2.2f),pow(y,2.2f),pow(z,2.2f));
-}
-
-void Application::draw()
-{
-    if(this->isHidden())
-        return;
-
-  drawBackground();
-
-  //Draw points
-  glPointSize(5.0);
-  glLineWidth(2);
-  glBegin(GL_POINTS);
-
-  //Background points
-  for(auto it = mInputAssembler->backgroundPoints().begin(); it!=mInputAssembler->backgroundPoints().end(); ++it)
-  {
-      glColor3f(1,0,0);
-      glVertex3f(it->x, it->y, it->z);
-  }
-
-  //Foreground points
-  for(auto it = mInputAssembler->points().begin(); it!=mInputAssembler->points().end(); ++it)
-  {
-      auto c = mInputAssembler->debugGetPointColour(*it);
-
-      //Swap components because the internal image is in BGR
-      glColor3fSRGB(c.x,c.y,c.z);
-
-      glVertex3f(it->x, it->y, it->z);
-  }
-  glEnd();
-
-  //Draw background point
-  if(mInputAssembler)
-  {
-      glColor3fSRGB(1,0,0);
-      glPointSize(10.0);
-      glBegin(GL_POINTS);
-      auto b = mInputAssembler->background();
-      glVertex3f(b.x,b.y,b.z);
-      glEnd();
-  }
-
-  //Draw algorithm
-  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-  if(mAlgorithm)
-      mAlgorithm->debugDraw();
-  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-
-  glPointSize(5.0);
-}
-
-void Application::drawBackground()
-{
-    float c1r = 0.95, c1g = 0.95, c1b = 0.95;
-    float c2r = 0.4, c2g = 0.6, c2b = 0.4;
-
-    //Push
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-
-    //Draw
-    glBegin(GL_QUADS);
-    //c1
-    glColor3fSRGB(c1r,c1g,c1b);
-    glVertex2f(1.0, 1.0);
-    glVertex2f(-1.0,1.0);
-    //c2
-    glColor3fSRGB(c2r,c2g,c2b);
-    glVertex2f(-1.0,-1.0);
-    glVertex2f(1.0, -1.0);
-    glEnd();
-
-    //Pop
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glClear(GL_DEPTH_BUFFER_BIT);
-}
-
-QString Application::helpString() const
-{
-  QString text("<h2>S i m p l e V i e w e r</h2>");
-  text += "Use the mouse to move the camera around the object. ";
-  text += "You can respectively revolve around, zoom and translate with the three mouse buttons. ";
-  text += "Left and middle buttons pressed together rotate around the camera view direction axis<br><br>";
-  text += "Pressing <b>Alt</b> and one of the function keys (<b>F1</b>..<b>F12</b>) defines a camera keyFrame. ";
-  text += "Simply press the function key again to restore it. Several keyFrames define a ";
-  text += "camera path. Paths are saved when you quit the application and restored at next start.<br><br>";
-  text += "Press <b>F</b> to display the frame rate, <b>A</b> for the world axis, ";
-  text += "<b>Alt+Return</b> for full screen mode and <b>Control+S</b> to save a snapshot. ";
-  text += "See the <b>Keyboard</b> tab in this window for a complete shortcut list.<br><br>";
-  text += "Double clicks automates single click actions: A left button double click aligns the closer axis with the camera (if close enough). ";
-  text += "A middle button double click fits the zoom of the camera and the right button re-centers the scene.<br><br>";
-  text += "A left button double click while holding right button pressed defines the camera <i>Revolve Around Point</i>. ";
-  text += "See the <b>Mouse</b> tab and the documentation web pages for details.<br><br>";
-  text += "Press <b>Escape</b> to exit the Application.";
-  return text;
-}
+////////////////////////////////////////////////////////////////////////////////
+///////////////////Below this, it's just for 3D previewing. ////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//
+///** This function takes in a normalised colour in linear colourspace and
+//    calls glColour3f with its gamma-corrected version. */
+//void glColor3fSRGB(float x, float y, float z)
+//{
+//    glColor3f(pow(x,2.2f),pow(y,2.2f),pow(z,2.2f));
+//}
+//
+//void Application::draw()
+//{
+//    if(this->isHidden())
+//        return;
+//
+//  drawBackground();
+//
+//  //Draw points
+//  glPointSize(5.0);
+//  glLineWidth(2);
+//  glBegin(GL_POINTS);
+//
+//  //Background points
+//  for(auto it = mInputAssembler->backgroundPoints().begin(); it!=mInputAssembler->backgroundPoints().end(); ++it)
+//  {
+//      glColor3f(1,0,0);
+//      glVertex3f(it->x, it->y, it->z);
+//  }
+//
+//  //Foreground points
+//  for(auto it = mInputAssembler->points().begin(); it!=mInputAssembler->points().end(); ++it)
+//  {
+//      auto c = mInputAssembler->debugGetPointColour(*it);
+//
+//      //Swap components because the internal image is in BGR
+//      glColor3fSRGB(c.x,c.y,c.z);
+//
+//      glVertex3f(it->x, it->y, it->z);
+//  }
+//  glEnd();
+//
+//  //Draw background point
+//  if(mInputAssembler)
+//  {
+//      glColor3fSRGB(1,0,0);
+//      glPointSize(10.0);
+//      glBegin(GL_POINTS);
+//      auto b = mInputAssembler->background();
+//      glVertex3f(b.x,b.y,b.z);
+//      glEnd();
+//  }
+//
+//  //Draw algorithm
+//  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+//  if(mAlgorithm)
+//      mAlgorithm->debugDraw();
+//  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+//
+//  glPointSize(5.0);
+//}
+//
+//void Application::drawBackground()
+//{
+//    float c1r = 0.95, c1g = 0.95, c1b = 0.95;
+//    float c2r = 0.4, c2g = 0.6, c2b = 0.4;
+//
+//    //Push
+//    glMatrixMode(GL_PROJECTION);
+//    glPushMatrix();
+//    glLoadIdentity();
+//    glMatrixMode(GL_MODELVIEW);
+//    glPushMatrix();
+//    glLoadIdentity();
+//
+//    //Draw
+//    glBegin(GL_QUADS);
+//    //c1
+//    glColor3fSRGB(c1r,c1g,c1b);
+//    glVertex2f(1.0, 1.0);
+//    glVertex2f(-1.0,1.0);
+//    //c2
+//    glColor3fSRGB(c2r,c2g,c2b);
+//    glVertex2f(-1.0,-1.0);
+//    glVertex2f(1.0, -1.0);
+//    glEnd();
+//
+//    //Pop
+//    glPopMatrix();
+//    glMatrixMode(GL_MODELVIEW);
+//    glPopMatrix();
+//    glMatrixMode(GL_PROJECTION);
+//    glPopMatrix();
+//    glClear(GL_DEPTH_BUFFER_BIT);
+//}
+//
+//QString Application::helpString() const
+//{
+//  QString text("<h2>S i m p l e V i e w e r</h2>");
+//  text += "Use the mouse to move the camera around the object. ";
+//  text += "You can respectively revolve around, zoom and translate with the three mouse buttons. ";
+//  text += "Left and middle buttons pressed together rotate around the camera view direction axis<br><br>";
+//  text += "Pressing <b>Alt</b> and one of the function keys (<b>F1</b>..<b>F12</b>) defines a camera keyFrame. ";
+//  text += "Simply press the function key again to restore it. Several keyFrames define a ";
+//  text += "camera path. Paths are saved when you quit the application and restored at next start.<br><br>";
+//  text += "Press <b>F</b> to display the frame rate, <b>A</b> for the world axis, ";
+//  text += "<b>Alt+Return</b> for full screen mode and <b>Control+S</b> to save a snapshot. ";
+//  text += "See the <b>Keyboard</b> tab in this window for a complete shortcut list.<br><br>";
+//  text += "Double clicks automates single click actions: A left button double click aligns the closer axis with the camera (if close enough). ";
+//  text += "A middle button double click fits the zoom of the camera and the right button re-centers the scene.<br><br>";
+//  text += "A left button double click while holding right button pressed defines the camera <i>Revolve Around Point</i>. ";
+//  text += "See the <b>Mouse</b> tab and the documentation web pages for details.<br><br>";
+//  text += "Press <b>Escape</b> to exit the Application.";
+//  return text;
+//}

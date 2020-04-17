@@ -1,7 +1,7 @@
 #pragma once
 #include "matrixd.h"
 #include <vector>
-#include <QGLViewer/qglviewer.h>
+//#include <QGLViewer/qglviewer.h>
 
 /**
   * This class constructs, stores and manages a carefully-constructed 3D spherical
